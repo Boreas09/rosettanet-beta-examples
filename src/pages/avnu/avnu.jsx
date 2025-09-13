@@ -11,6 +11,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { getStarknetAddress } from "../../utils/starknetUtils";
+import { useContract } from "../../context/ContractContext";
 import { useAccount } from "wagmi";
 import { sendTransaction } from "@wagmi/core";
 import { parseEther } from "ethers";
@@ -25,6 +26,7 @@ import { toaster } from "../../components/ui/toaster";
 
 export default function Avnu() {
   const { address, chainId } = useAccount();
+  const { selectedContract } = useContract();
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [value, setValue] = useState("");
@@ -66,7 +68,7 @@ export default function Avnu() {
     }
 
     try {
-      const snAddress = await getStarknetAddress(address);
+      const snAddress = await getStarknetAddress(address, selectedContract);
 
       const amount = parseEther(value);
       const amountHex = "0x" + amount.toString(16);
@@ -144,22 +146,29 @@ export default function Avnu() {
           <Text fontSize="lg" fontWeight="bold" mb={2}>
             Avnu Exchange STRK to ETH
           </Text>
-          <Text fontSize="sm" color="gray.600" mb={2}>
+          <Text fontSize="sm" mb={2}>
             This part uses Avnu to exchange STRK to ETH. After successful
             exchange, you can see your increased ETH amount in your wallet.
           </Text>
-          <Text fontSize="sm" color="gray.600">
+          <Text fontSize="sm">
             Wallet needs to be connected to{" "}
-            <Text as="span" bg="orange.50" px={2} py={1} borderRadius="md" color="orange.600">
+            <Text
+              as="span"
+              bg="orange.50"
+              px={2}
+              py={1}
+              borderRadius="md"
+              color="orange.600"
+            >
               RosettaNet
             </Text>{" "}
             Chain.
           </Text>
         </Box>
 
-        <Stack 
-          direction={{ base: "column", md: "row" }} 
-          gap={4} 
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          gap={4}
           align="stretch"
         >
           <Input
@@ -194,7 +203,11 @@ export default function Avnu() {
                       <Text fontSize="sm" fontWeight="bold">
                         Exchange #{index + 1}
                       </Text>
-                      <Text fontSize="xs" color="gray.500" wordBreak="break-all">
+                      <Text
+                        fontSize="xs"
+                        color="gray.500"
+                        wordBreak="break-all"
+                      >
                         {tx}
                       </Text>
                       <Link

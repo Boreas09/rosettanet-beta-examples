@@ -123,15 +123,15 @@ export default function StarkgateWithdraw() {
           successfully sent, you can see your ETH amount in Ethereum Sepolia
           chain in your wallet.
         </Text>
-        <Text fontSize="sm">
+        <Text fontSize="sm" mt={2}>
           Wallet needs to be connected to{" "}
           <Text
             as="span"
-            bg="purple.50"
+            bg="orange.50"
             px={2}
             py={1}
             borderRadius="md"
-            color="purple.600"
+            color="orange.600"
           >
             RosettaNet
           </Text>{" "}

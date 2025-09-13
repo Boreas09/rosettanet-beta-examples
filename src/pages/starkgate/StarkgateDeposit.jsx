@@ -11,6 +11,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { getStarknetAddress } from "../../utils/starknetUtils";
+import { useContract } from "../../context/ContractContext";
 import { parseEther } from "ethers";
 import { toaster } from "../../components/ui/toaster";
 
@@ -42,6 +43,7 @@ const starkgateSepoliaAbi = [
 
 export default function StarkgateDeposit() {
   const { address, chainId } = useAccount();
+  const { selectedContract } = useContract();
   const { writeContractAsync } = useWriteContract({
     abi: starkgateSepoliaAbi,
   });
@@ -84,7 +86,7 @@ export default function StarkgateDeposit() {
       return;
     }
 
-    const snAddress = await getStarknetAddress(address);
+    const snAddress = await getStarknetAddress(address, selectedContract);
 
     try {
       const response = await writeContractAsync({

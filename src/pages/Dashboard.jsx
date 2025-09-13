@@ -11,14 +11,23 @@ import {
   VStack,
   HStack,
 } from "@chakra-ui/react";
+import { useTheme } from "next-themes";
 import { LuExternalLink } from "react-icons/lu";
-import { getStarknetAddress } from "../utils/starknetUtils";
+import { getStarknetAddress, CONTRACT_OPTIONS } from "../utils/starknetUtils";
 import { toaster } from "../components/ui/toaster";
+import { useContract } from "../context/ContractContext";
+import { clearAppKitCache, forceDisconnectMetaMask } from "../utils/appkitProvider";
+import { useDisconnect } from "wagmi";
+import { useAppKit } from "@reown/appkit/react";
 
 export function Dashboard() {
   const [ethAddress, setEthAddress] = useState("");
   const [starknetAddress, setStarknetAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { selectedContract, setSelectedContract } = useContract();
+  const { resolvedTheme } = useTheme();
+  const { disconnect } = useDisconnect();
+  const { open, close } = useAppKit();
 
   const handleGetStarknetAddress = async () => {
     if (!ethAddress) {
@@ -33,7 +42,10 @@ export function Dashboard() {
 
     setIsLoading(true);
     try {
-      const starknetAddress = await getStarknetAddress(ethAddress);
+      const starknetAddress = await getStarknetAddress(
+        ethAddress,
+        selectedContract
+      );
       setStarknetAddress(starknetAddress);
       toaster.create({
         title: "Success",
@@ -53,12 +65,117 @@ export function Dashboard() {
     }
   };
 
+  const handleClearCache = () => {
+    const success = clearAppKitCache();
+    if (success) {
+      toaster.create({
+        title: "Success",
+        description: "Wallet connection cache cleared! You can now connect fresh.",
+        type: "success",
+        duration: 4000,
+      });
+    } else {
+      toaster.create({
+        title: "Error", 
+        description: "Failed to clear cache. Try manual browser cache clearing.",
+        type: "error",
+        duration: 4000,
+      });
+    }
+  };
+
+  const handleDisconnectWallet = async () => {
+    try {
+      // Disconnect from Wagmi
+      disconnect();
+      
+      // Close AppKit modal if open
+      close();
+      
+      // Force disconnect MetaMask and clear all cache
+      await forceDisconnectMetaMask();
+      
+      toaster.create({
+        title: "Success",
+        description: "Wallet forcefully disconnected! MetaMask connection cleared.",
+        type: "success",
+        duration: 4000,
+      });
+    } catch (error) {
+      console.error('Disconnect error:', error);
+      toaster.create({
+        title: "Error",
+        description: `Failed to disconnect wallet: ${error.message || 'Unknown error'}`,
+        type: "error",
+        duration: 4000,
+      });
+    }
+  };
+
+  const handleForceResetMetaMask = async () => {
+    try {
+      const success = await forceDisconnectMetaMask();
+      
+      if (success) {
+        toaster.create({
+          title: "MetaMask Reset",
+          description: "MetaMask connection forcefully reset! Try connecting again.",
+          type: "success",
+          duration: 5000,
+        });
+      } else {
+        toaster.create({
+          title: "Reset Failed",
+          description: "Could not reset MetaMask. Try manually disconnecting in MetaMask extension.",
+          type: "warning",
+          duration: 6000,
+        });
+      }
+    } catch (error) {
+      console.error('MetaMask reset error:', error);
+      toaster.create({
+        title: "Error",
+        description: "Failed to reset MetaMask connection.",
+        type: "error",
+        duration: 4000,
+      });
+    }
+  };
+
   return (
     <Container maxW="3xl" overflow="hidden">
       <VStack gap="6" align="stretch">
-        <Heading size="lg" textAlign={{ base: "center", md: "left" }}>
-          RosettaNet BETA Testing Dashboard
-        </Heading>
+        <HStack justifyContent="space-between" alignItems="center">
+          <Heading size="lg" textAlign={{ base: "center", md: "left" }}>
+            RosettaNet BETA Testing Dashboard
+          </Heading>
+          <HStack gap={2} flexWrap="wrap">
+            <Button
+              onClick={handleForceResetMetaMask}
+              size="sm"
+              variant="solid"
+              colorScheme="purple"
+            >
+              Force Reset MetaMask
+            </Button>
+            <Button
+              onClick={handleDisconnectWallet}
+              size="sm"
+              variant="outline"
+              colorScheme="orange"
+            >
+              Disconnect Wallet
+            </Button>
+            <Button
+              onClick={handleClearCache}
+              size="sm"
+              variant="outline"
+              colorScheme="red"
+            >
+              Clear Cache
+            </Button>
+          </HStack>
+        </HStack>
 
         <Heading size="md" color="orange.500">
           First Transaction Requests Could Be Slow Due to Backend Provider
@@ -164,7 +281,7 @@ export function Dashboard() {
             </List.Item>
           </List.Root>
 
-          <Text fontStyle="italic" mb={8} color="gray.600">
+          <Text fontStyle="italic" mb={8} color="gray.400">
             Rosetta aims to give EVM experience to users where they won't ever
             notify they are using Starknet.
           </Text>
@@ -174,21 +291,44 @@ export function Dashboard() {
           </Heading>
 
           <VStack gap={4} align="stretch">
-            <HStack gap={4}>
-              <Input
-                placeholder="Enter ETH Address"
-                value={ethAddress}
-                onChange={(e) => setEthAddress(e.target.value)}
-                flex={1}
-              />
-              <Button 
-                onClick={handleGetStarknetAddress} 
-                colorScheme="blue"
-                loading={isLoading}
-                disabled={isLoading}
+            <Text fontStyle="italic" color="gray.400">
+              This selection is not going to effect RPC's contracts. This is for
+              ensuring website is working with same contracts with RPC.
+            </Text>
+            <HStack gap={4} align="center">
+              <Box flex={1}>
+                <select
+                  value={selectedContract}
+                  onChange={(e) => setSelectedContract(e.target.value)}
+                  style={{
+                    width: "100%",
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                    border: `1px solid ${
+                      resolvedTheme === "dark" ? "#4a5568" : "#e2e8f0"
+                    }`,
+                    backgroundColor:
+                      resolvedTheme === "dark" ? "#2d3748" : "#e2e8f0",
+                    color: resolvedTheme === "dark" ? "#ffffff" : "#000000",
+                    fontSize: "14px",
+                    outline: "none",
+                  }}
+                >
+                  {Object.keys(CONTRACT_OPTIONS).map((key) => (
+                    <option key={key} value={key}>
+                      {key.replace(/_/g, " ")}
+                    </option>
+                  ))}
+                </select>
+              </Box>
+              <Text
+                fontWeight="medium"
+                color="fg.muted"
+                fontSize="sm"
+                minW="fit-content"
               >
-                Get Starknet Address
-              </Button>
+                Selected: {selectedContract.replace(/_/g, " ")}
+              </Text>
             </HStack>
             {starknetAddress && (
               <Text
@@ -201,6 +341,22 @@ export function Dashboard() {
                 Starknet Address: {starknetAddress}
               </Text>
             )}
+            <HStack gap={4}>
+              <Input
+                placeholder="Enter ETH Address"
+                value={ethAddress}
+                onChange={(e) => setEthAddress(e.target.value)}
+                flex={1}
+              />
+              <Button
+                onClick={handleGetStarknetAddress}
+                colorScheme="blue"
+                loading={isLoading}
+                disabled={isLoading}
+              >
+                Get Starknet Address
+              </Button>
+            </HStack>
           </VStack>
         </Box>
       </VStack>

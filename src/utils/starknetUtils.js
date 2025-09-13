@@ -14,13 +14,18 @@ const rosettanetNoL1GasValidation = "0x049fe1e4d813f5d7a05b0e76b6fd5dc81554f2a0a
 
 const rosettanetEriminGas = "0x0738a28eda7041678adcfc7f01468b34828dd857937252c4054eb579f15c3489"
 
-export async function getStarknetAddress(address) {
+export const CONTRACT_OPTIONS = {
+  V1_NO_GAS_VERIF: rosettanetNoL1GasValidation,
+  V2_WITH_L2_GAS_VERIF: rosettanetEriminGas,
+};
+
+export async function getStarknetAddress(address, contractType = 'V2_WITH_L2_GAS_VERIF') {
   try{
   const starknetProvider = new RpcProvider({
     nodeUrl: 'https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_8/Ml3s1yVYyyuskNoJAAkuAUDSWv7eH51C',
   });
 
-  const contractAddress = rosettanetEriminGas;
+  const contractAddress = CONTRACT_OPTIONS[contractType] || rosettanetEriminGas;
 
   const { abi: contractAbi } = await starknetProvider.getClassAt(
     contractAddress

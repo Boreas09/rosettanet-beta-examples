@@ -25,16 +25,17 @@ import ActiveChain from "./activeChain.jsx";
 import AddRosettanetChain from "./addRosettanetChain.jsx";
 import AddRosettanetETH from "./addRosettanetEth.jsx";
 import ChainSwitcher from "./chainSwitcher.jsx";
+import AddRosettanetXSTRK from "./addRosettanetXSTRK.jsx";
 
 const navigationItems = [
   { path: "/", label: "Home", icon: FiHome },
   { path: "/starkgate", label: "Starkgate", icon: FiUser },
   { path: "/avnu", label: "Avnu", icon: FiBarChart },
-  { path: "/settings", label: "Unruggable", icon: FiSettings },
-  { path: "/profile", label: "Endur LST xSTRK", icon: FiUser },
-  { path: "/analyatics", label: "StarknetJS", icon: FiBarChart },
-  { path: "/settisdsngs", label: "Ethers", icon: FiSettings },
-  { path: "/settidsadsngs", label: "Get Starknet V5", icon: FiSettings },
+  { path: "/unruggable", label: "Unruggable", icon: FiSettings },
+  { path: "/endur", label: "Endur LST xSTRK", icon: FiUser },
+  { path: "/starknetjs", label: "StarknetJS", icon: FiBarChart },
+  { path: "/ethers", label: "Ethers", icon: FiSettings },
+  { path: "/getstarknetv5", label: "Get Starknet V5", icon: FiSettings },
 ];
 
 const NavItem = ({
@@ -183,6 +184,7 @@ export function Sidebar() {
             <Separator />
             <AddRosettanetChain />
             <AddRosettanetETH />
+            <AddRosettanetXSTRK />
             <Separator />
             <ChainSwitcher />
           </VStack>
