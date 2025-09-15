@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import App from "./App.jsx";
-import { Dashboard } from "./pages/Dashboard.jsx";
+import { Home } from "./pages/Home.jsx";
 import Starkgate from "./pages/starkgate/Starkgate.jsx";
 import { ChakraProvider, defaultSystem } from "@chakra-ui/react";
 import { ThemeProvider } from "next-themes";
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Dashboard />,
+        element: <Home />,
       },
       {
         path: "/starkgate",

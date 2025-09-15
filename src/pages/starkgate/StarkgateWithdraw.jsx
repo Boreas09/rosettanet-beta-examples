@@ -6,8 +6,6 @@ import {
   Button,
   Text,
   Input,
-  Card,
-  Link,
   VStack,
   Stack,
 } from "@chakra-ui/react";
@@ -17,6 +15,7 @@ import { cairo } from "starknet";
 import { reownConfig } from "../../utils/appkitProvider";
 import { prepareMulticallCalldata } from "rosettanet";
 import { toaster } from "../../components/ui/toaster";
+import TransactionList from "../../components/TransactionList";
 
 export default function StarkgateWithdraw() {
   const { chainId } = useAccount();
@@ -152,38 +151,10 @@ export default function StarkgateWithdraw() {
         </Button>
       </Stack>
 
-      {transactions.length > 0 && (
-        <Box>
-          <Text fontSize="lg" fontWeight="bold" mb={4}>
-            Recent Transactions
-          </Text>
-          <VStack gap={3}>
-            {transactions.map((tx, index) => (
-              <Card.Root key={tx} size="sm" w="full">
-                <Card.Body>
-                  <VStack align="start" gap={2}>
-                    <Text fontSize="sm" fontWeight="bold">
-                      Transaction #{index + 1}
-                    </Text>
-                    <Text fontSize="xs" color="gray.500" wordBreak="break-all">
-                      {tx}
-                    </Text>
-                    <Link
-                      fontSize="sm"
-                      href={`https://sepolia.voyager.online/tx/${tx}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      color="purple.500"
-                    >
-                      View on Voyager →
-                    </Link>
-                  </VStack>
-                </Card.Body>
-              </Card.Root>
-            ))}
-          </VStack>
-        </Box>
-      )}
+      <TransactionList
+        transactions={transactions}
+        linkColor="purple.500"
+      />
     </VStack>
   );
 }

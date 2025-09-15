@@ -22,6 +22,7 @@ import {
   executeSignMessageV5,
   executeWatchAsset,
 } from "./getstarknetHelpers";
+import TransactionList from "../../components/TransactionList";
 
 // Loading states for each wallet and action
 const LOADING_ACTIONS = {
@@ -344,40 +345,7 @@ export default function GetStarknetV5() {
         {transactions.length > 0 && (
           <>
             <Separator />
-            <Box>
-              <Text mb={4} fontSize="lg" fontWeight="bold">
-                Recent Transactions
-              </Text>
-              <VStack gap={3}>
-                {transactions.map((tx, index) => (
-                  <Card.Root key={index} size="sm" w="full">
-                    <Card.Body>
-                      <VStack align="start" gap={2}>
-                        <Text fontSize="sm" fontWeight="bold">
-                          Transaction #{index + 1}
-                        </Text>
-                        <Text
-                          fontSize="xs"
-                          color="gray.500"
-                          wordBreak="break-all"
-                        >
-                          {tx}
-                        </Text>
-                        <Link
-                          fontSize="sm"
-                          href={`https://sepolia.voyager.online/tx/${tx}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          color="orange.500"
-                        >
-                          View on Voyager →
-                        </Link>
-                      </VStack>
-                    </Card.Body>
-                  </Card.Root>
-                ))}
-              </VStack>
-            </Box>
+            <TransactionList transactions={transactions} />
           </>
         )}
 

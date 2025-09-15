@@ -9,7 +9,7 @@ import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 const queryClient = new QueryClient();
 
 // 1. Get projectId from https://cloud.reown.com
-const projectId = "26f04a72b999722f634c0d20ad88561d";
+const projectId = "a1734e053a2928ca8079bc2dc6499944";
 
 const rosettanetRender = "https://rosettanet.onrender.com/";
 const rosettanetLocal = "http://localhost:3000/";

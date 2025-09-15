@@ -2,9 +2,7 @@ import { useState } from "react";
 import {
   Button,
   Text,
-  Card,
   Stack,
-  Link,
   Container,
   Input,
   VStack,
@@ -12,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import { toaster } from "../../components/ui/toaster";
+import TransactionList from "../../components/TransactionList";
 
 export default function Ethers() {
   const [transactions, setTransactions] = useState([]);
@@ -183,35 +182,11 @@ export default function Ethers() {
           </HStack>
         </VStack>
 
-        <Text fontSize={"lg"} fontWeight={"bold"} mt={6}>
-          Transactions
-        </Text>
-
-        <VStack gap={3} align="stretch">
-          {transactions.map((tx, index) => (
-            <Card.Root key={tx} size={"sm"} borderRadius={"lg"}>
-              <Card.Body>
-                <Stack gap={2}>
-                  <Text fontSize={"sm"} fontWeight={"bold"}>
-                    Transaction {index + 1}
-                  </Text>
-                  <Text fontSize={"sm"} wordBreak="break-all">
-                    Transaction Hash: {tx}
-                  </Text>
-                  <Link
-                    fontSize={"sm"}
-                    href={`https://sepolia.voyager.online/tx/${tx}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    color="blue.500"
-                  >
-                    View on Voyager
-                  </Link>
-                </Stack>
-              </Card.Body>
-            </Card.Root>
-          ))}
-        </VStack>
+        <TransactionList
+          transactions={transactions}
+          title="Transactions"
+          linkText="View on Voyager"
+        />
       </VStack>
     </Container>
   );

@@ -5,8 +5,6 @@ import {
   Button,
   Text,
   Input,
-  Card,
-  Link,
   VStack,
   Stack,
 } from "@chakra-ui/react";
@@ -14,6 +12,7 @@ import { getStarknetAddress } from "../../utils/starknetUtils";
 import { useContract } from "../../context/ContractContext";
 import { parseEther } from "ethers";
 import { toaster } from "../../components/ui/toaster";
+import TransactionList from "../../components/TransactionList";
 
 const starkgateSepoliaAbi = [
   {
@@ -155,38 +154,12 @@ export default function StarkgateDeposit() {
         </Button>
       </Stack>
 
-      {transactions.length > 0 && (
-        <Box>
-          <Text fontSize="lg" fontWeight="bold" mb={4}>
-            Recent Transactions
-          </Text>
-          <VStack gap={3}>
-            {transactions.map((tx, index) => (
-              <Card.Root key={tx} size="sm" w="full">
-                <Card.Body>
-                  <VStack align="start" gap={2}>
-                    <Text fontSize="sm" fontWeight="bold">
-                      Transaction #{index + 1}
-                    </Text>
-                    <Text fontSize="xs" color="gray.500" wordBreak="break-all">
-                      {tx}
-                    </Text>
-                    <Link
-                      fontSize="sm"
-                      href={`https://sepolia.etherscan.io/tx/${tx}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      color="blue.500"
-                    >
-                      View on Etherscan →
-                    </Link>
-                  </VStack>
-                </Card.Body>
-              </Card.Root>
-            ))}
-          </VStack>
-        </Box>
-      )}
+      <TransactionList
+        transactions={transactions}
+        explorerUrl="https://sepolia.etherscan.io/tx"
+        linkColor="blue.500"
+        linkText="View on Etherscan →"
+      />
     </VStack>
   );
 }

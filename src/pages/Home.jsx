@@ -17,7 +17,7 @@ import { getStarknetAddress, CONTRACT_OPTIONS } from "../utils/starknetUtils";
 import { toaster } from "../components/ui/toaster";
 import { useContract } from "../context/ContractContext";
 
-export function Dashboard() {
+export function Home() {
   const [ethAddress, setEthAddress] = useState("");
   const [starknetAddress, setStarknetAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -58,13 +58,6 @@ export function Dashboard() {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const ethRequestAccounts = async () => {
-    await window.ethereum.request({
-      method: "eth_requestAccounts",
-      params: [],
-    });
   };
 
   return (
@@ -121,40 +114,58 @@ export function Dashboard() {
           </Box>
 
           {/* Overview Section */}
-          <Heading size="md" mb={4}>
+          <Heading size="md" fontWeight="bold" mb={4}>
             Overview
           </Heading>
           <Text mb={4}>
-            Rosetta is a middleware software that acts like an Ethereum RPC. It
-            makes requests to the Starknet network while outputting Ethereum RPC
-            outputs. This allows users to interact with Starknet the same as
-            they interact with the EVM-compatible chain.
+            Rosettanet is a middleware software that acts like an Ethereum RPC.
+            It makes requests to the Starknet network while outputting Ethereum
+            RPC outputs. This allows users to interact with Starknet the same as
+            they interact with the EVM-compatible chain. Avnu, Endur LST,
+            Unruggable and Starkgate pages calling Rosettanet with Wagmi
+            Library. Wallet connection is done by Reown (WalletConnect).
           </Text>
 
           <Text fontWeight="bold" mb={2}>
-            Rosetta
-          </Text>
-          <List.Root mb={4} pl={4}>
-            <List.Item>Rosetta is not a Starknet node itself.</List.Item>
-            <List.Item>
-              Rosetta needs a working Starknet node to be connected.
-            </List.Item>
-            <List.Item>
-              Rosetta can handle both Starknet and Ethereum RPC requests.
-            </List.Item>
-          </List.Root>
-
-          <Text fontWeight="bold" mb={2}>
-            What does Rosetta benefit to users?
+            Working Wallets
           </Text>
           <List.Root mb={4} pl={4}>
             <List.Item>
               You can connect and interact protocols in Starknet with your
-              existing EVM wallet (Metamask, Trust wallet, Hardware wallets,
-              etc.)
+              existing EVM wallet (Metamask, Rabby wallet, Coinbase Wallet,
+              Hardware wallets, etc.) Metamask
+            </List.Item>
+            <List.Item>Rabby wallet</List.Item>
+            <List.Item>
+              You can use L1 interactive protocols by just changing the network
+              on your wallet.
+            </List.Item>
+          </List.Root>
+
+          <Text fontWeight="bold" mb={2}>
+            Rosettanet
+          </Text>
+          <List.Root mb={4} pl={4}>
+            <List.Item>Rosettanet is not a Starknet node itself.</List.Item>
+            <List.Item>
+              Rosettanet needs a working Starknet node to be connected.
             </List.Item>
             <List.Item>
-              You can use Rosetta on local. There is no sync needed. Simply,
+              Rosettanet can handle both Starknet and Ethereum RPC requests.
+            </List.Item>
+          </List.Root>
+
+          <Text fontWeight="bold" mb={2}>
+            What does Rosettanet benefit to users?
+          </Text>
+          <List.Root mb={4} pl={4}>
+            <List.Item>
+              You can connect and interact protocols in Starknet with your
+              existing EVM wallet (Metamask, Rabby wallet, Coinbase Wallet,
+              Hardware wallets, etc.)
+            </List.Item>
+            <List.Item>
+              You can use Rosettanet on local. There is no sync needed. Simply,
               users can clone the repo and use their local Rosetta node to
               connect to Starknet.
             </List.Item>
@@ -165,7 +176,7 @@ export function Dashboard() {
           </List.Root>
 
           <Text fontWeight="bold" mb={2}>
-            What does Rosetta benefit to devs?
+            What does Rosettanet benefit to devs?
           </Text>
           <List.Root mb={4} pl={4}>
             <List.Item>
@@ -175,14 +186,14 @@ export function Dashboard() {
               If you want to migrate your project from the EVM chain to
               Starknet, all you need to do is develop your smart contracts with
               Cairo. You just need to care about providing the same ABI in both.
-              You don't need to make any changes on frontend or backend. Rosetta
-              handles all of these.
+              You don't need to make any changes on frontend or backend.
+              Rosettanet handles all of these.
             </List.Item>
           </List.Root>
 
           <Text fontStyle="italic" mb={8} color="gray.400">
-            Rosetta aims to give EVM experience to users where they won't ever
-            notify they are using Starknet.
+            Rosettanet aims to give EVM experience to users where they won't
+            ever notify they are using Starknet.
           </Text>
 
           <Heading size="md" mb={4}>

@@ -5,8 +5,6 @@ import {
   Input,
   Text,
   Stack,
-  Card,
-  Link,
   VStack,
   Box,
 } from "@chakra-ui/react";
@@ -20,6 +18,7 @@ import { asciiToHex } from "../../utils/asciiToHex";
 import { reownConfig } from "../../utils/appkitProvider";
 import { prepareMulticallCalldata } from "rosettanet";
 import { toaster } from "../../components/ui/toaster";
+import TransactionList from "../../components/TransactionList";
 
 export default function Unruggable() {
   const { address, chainId } = useAccount();
@@ -213,35 +212,11 @@ export default function Unruggable() {
           </VStack>
         </Box>
 
-        <Text fontSize={"lg"} fontWeight={"bold"} mt={6}>
-          Transactions
-        </Text>
-
-        <VStack gap={3} align="stretch">
-          {transactions.map((tx, index) => (
-            <Card.Root key={tx} size={"sm"} borderRadius={"lg"}>
-              <Card.Body>
-                <Stack gap={2}>
-                  <Text fontSize={"sm"} fontWeight={"bold"}>
-                    Transaction {index + 1}
-                  </Text>
-                  <Text fontSize={"sm"} wordBreak="break-all">
-                    Transaction Hash: {tx}
-                  </Text>
-                  <Link
-                    fontSize={"sm"}
-                    href={`https://sepolia.voyager.online/tx/${tx}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    color="blue.500"
-                  >
-                    View on Voyager
-                  </Link>
-                </Stack>
-              </Card.Body>
-            </Card.Root>
-          ))}
-        </VStack>
+        <TransactionList
+          transactions={transactions}
+          title="Transactions"
+          linkText="View on Voyager"
+        />
       </VStack>
     </Container>
   );
