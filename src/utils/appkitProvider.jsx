@@ -66,9 +66,9 @@ createAppKit({
   features: {
     analytics: true, // Optional - defaults to your Cloud configuration
   },
-  excludeWalletIds: [
-    "971e689d0a5be527bac79629b4ee9b925e82208e5168b733496a09c0faed0709",
-  ],
+  // excludeWalletIds: [
+  //   "971e689d0a5be527bac79629b4ee9b925e82208e5168b733496a09c0faed0709",
+  // ],
 });
 
 export function AppKitProvider({ children }) {

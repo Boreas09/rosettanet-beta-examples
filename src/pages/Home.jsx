@@ -225,14 +225,6 @@ export function Home() {
                   ))}
                 </select>
               </Box>
-              <Text
-                fontWeight="medium"
-                color="fg.muted"
-                fontSize="sm"
-                minW="fit-content"
-              >
-                Selected: {selectedContract.replace(/_/g, " ")}
-              </Text>
             </HStack>
             {starknetAddress && (
               <Text
