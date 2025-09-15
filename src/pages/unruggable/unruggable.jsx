@@ -151,7 +151,7 @@ export default function Unruggable() {
 
   return (
     <Container maxW="3xl" overflow={"hidden"}>
-      <VStack gap="6" align="stretch">
+      <VStack align="stretch">
         <Text fontSize={"lg"} fontWeight={"bold"}>
           Creating a token with using Unruggable Meme
         </Text>
@@ -207,12 +207,7 @@ export default function Unruggable() {
               onChange={(e) => setContractSalt(e.target.value)}
               required
             />
-            <Button
-              type="submit"
-              loading={loading}
-              disabled={loading}
-              colorScheme="blue"
-            >
+            <Button type="submit" loading={loading} disabled={loading}>
               {loading ? "Creating Memecoin..." : "Create Memecoin"}
             </Button>
           </VStack>

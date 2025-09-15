@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Button,
   Text,
@@ -9,21 +9,22 @@ import {
   Input,
   VStack,
   HStack,
-} from '@chakra-ui/react';
-import { ethers } from 'ethers';
-import { toaster } from '../../components/ui/toaster';
+} from "@chakra-ui/react";
+import { ethers } from "ethers";
+import { toaster } from "../../components/ui/toaster";
 
 export default function Ethers() {
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [recipient, setRecipient] = useState('');
+  const [recipient, setRecipient] = useState("");
+  const [ethSigner, setEthSigner] = useState(null);
 
   async function handleEthersConnection() {
     if (!window.ethereum) {
       toaster.create({
-        title: 'Wallet Error',
-        description: 'Ethereum wallet not found.',
-        type: 'error',
+        title: "Wallet Error",
+        description: "Ethereum wallet not found.",
+        type: "error",
         duration: 9000,
       });
       return null;
@@ -32,23 +33,23 @@ export default function Ethers() {
     const provider = new ethers.BrowserProvider(window.ethereum);
 
     try {
-      await provider.send('eth_requestAccounts', []);
+      await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
-      
+
       toaster.create({
-        title: 'Success',
-        description: 'Connected to wallet successfully!',
-        type: 'success',
+        title: "Success",
+        description: "Connected to wallet successfully!",
+        type: "success",
         duration: 3000,
       });
-      
+      setEthSigner(signer);
       return signer;
     } catch (e) {
       console.error(e);
       toaster.create({
-        title: 'Error',
+        title: "Error",
         description: `Connection failed: ${e.message || JSON.stringify(e)}`,
-        type: 'error',
+        type: "error",
         duration: 9000,
       });
       return null;
@@ -61,9 +62,9 @@ export default function Ethers() {
     if (!recipient) {
       setLoading(false);
       toaster.create({
-        title: 'Input Error',
-        description: 'Please Enter Recipient.',
-        type: 'error',
+        title: "Input Error",
+        description: "Please Enter Recipient.",
+        type: "error",
         duration: 9000,
       });
       return;
@@ -72,30 +73,30 @@ export default function Ethers() {
     const tx = {
       chainId: 1381192787,
       to: recipient,
-      value: ethers.parseEther('1'),
+      value: ethers.parseEther("1"),
     };
 
     try {
       const txResponse = await signer.sendTransaction(tx);
       setLoading(false);
-      setTransactions(prevData => [...prevData, txResponse.hash]);
-      
+      setTransactions((prevData) => [...prevData, txResponse.hash]);
+
       toaster.create({
-        title: 'Success',
-        description: '1 STRK sent successfully!',
-        type: 'success',
+        title: "Success",
+        description: "1 STRK sent successfully!",
+        type: "success",
         duration: 5000,
       });
-      
+
       // Clear recipient field after successful transaction
-      setRecipient('');
+      setRecipient("");
     } catch (e) {
       setLoading(false);
       console.error(e);
       toaster.create({
-        title: 'Transaction Error',
+        title: "Transaction Error",
         description: `Transaction failed: ${e.message || JSON.stringify(e)}`,
-        type: 'error',
+        type: "error",
         duration: 9000,
       });
     }
@@ -104,15 +105,15 @@ export default function Ethers() {
   async function switchToRosettanet() {
     try {
       await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: '0x52535453' }],
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: "0x52535453" }],
       });
     } catch (e) {
       console.error(e);
       toaster.create({
-        title: 'Network Error',
-        description: 'Please add RosettaNet Chain from left menu.',
-        type: 'error',
+        title: "Network Error",
+        description: "Please add RosettaNet Chain from left menu.",
+        type: "error",
         duration: 9000,
       });
     }
@@ -120,24 +121,33 @@ export default function Ethers() {
 
   async function handleFundTransfer() {
     await switchToRosettanet();
-    const signer = await handleEthersConnection();
-    if (!signer) return;
+    if (!ethSigner) {
+      toaster.create({
+        title: "Error",
+        description:
+          "Please connect to wallet with Ethers. If you connected with another method, please disconnect and connect again with Ethers.",
+        type: "error",
+        duration: 9000,
+      });
 
-    await send(signer);
+      return;
+    }
+
+    await send(ethSigner);
   }
 
   return (
-    <Container maxW="3xl" overflow={'hidden'}>
-      <VStack gap="6" align="stretch">
-        <Text fontSize={'lg'} fontWeight={'bold'}>
+    <Container maxW="3xl" overflow={"hidden"}>
+      <VStack gap="3" align="stretch">
+        <Text fontSize={"lg"} fontWeight={"bold"}>
           Ethers Library Examples
         </Text>
-        <Text as="cite" fontSize={'sm'}>
-          This part using Ethers.js library to interact with the Starknet through
-          Rosettanet.
+        <Text as="cite" fontSize={"sm"}>
+          This part using Ethers.js library to interact with the Starknet
+          through Rosettanet.
         </Text>
-        <Text fontSize="sm" mt={2}>
-          Wallet needs to be connected to{' '}
+        <Text fontSize="sm">
+          Wallet needs to be connected to
           <Text
             as="span"
             bg="orange.50"
@@ -147,7 +157,7 @@ export default function Ethers() {
             color="orange.600"
           >
             RosettaNet
-          </Text>{' '}
+          </Text>{" "}
           Chain.
         </Text>
 
@@ -155,9 +165,9 @@ export default function Ethers() {
           <Input
             placeholder="Enter Recipient ETH Address"
             value={recipient}
-            onChange={e => setRecipient(e.target.value)}
+            onChange={(e) => setRecipient(e.target.value)}
           />
-          
+
           <HStack gap={4}>
             <Button onClick={handleEthersConnection} variant="outline">
               Connect With Ethers
@@ -168,28 +178,28 @@ export default function Ethers() {
               disabled={loading}
               colorScheme="blue"
             >
-              {loading ? 'Sending 1 STRK...' : 'Send 1 STRK'}
+              {loading ? "Sending 1 STRK..." : "Send 1 STRK"}
             </Button>
           </HStack>
         </VStack>
 
-        <Text fontSize={'lg'} fontWeight={'bold'} mt={6}>
+        <Text fontSize={"lg"} fontWeight={"bold"} mt={6}>
           Transactions
         </Text>
-        
+
         <VStack gap={3} align="stretch">
           {transactions.map((tx, index) => (
-            <Card.Root key={tx} size={'sm'} borderRadius={'lg'}>
+            <Card.Root key={tx} size={"sm"} borderRadius={"lg"}>
               <Card.Body>
                 <Stack gap={2}>
-                  <Text fontSize={'sm'} fontWeight={'bold'}>
+                  <Text fontSize={"sm"} fontWeight={"bold"}>
                     Transaction {index + 1}
                   </Text>
-                  <Text fontSize={'sm'} wordBreak="break-all">
+                  <Text fontSize={"sm"} wordBreak="break-all">
                     Transaction Hash: {tx}
                   </Text>
                   <Link
-                    fontSize={'sm'}
+                    fontSize={"sm"}
                     href={`https://sepolia.voyager.online/tx/${tx}`}
                     target="_blank"
                     rel="noopener noreferrer"

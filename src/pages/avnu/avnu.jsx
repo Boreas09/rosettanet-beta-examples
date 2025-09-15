@@ -141,7 +141,7 @@ export default function Avnu() {
 
   return (
     <Container maxW="3xl" overflow="hidden">
-      <VStack gap="6" align="stretch">
+      <VStack gap="3" align="stretch">
         <Box>
           <Text fontSize="lg" fontWeight="bold" mb={2}>
             Avnu Exchange STRK to ETH
@@ -180,12 +180,7 @@ export default function Avnu() {
             flex={1}
             size={{ base: "lg", md: "md" }}
           />
-          <Button
-            onClick={handleClick}
-            loading={loading}
-            colorScheme="orange"
-            size="lg"
-          >
+          <Button onClick={handleClick} loading={loading}>
             {loading ? "Processing Exchange..." : "Exchange STRK → ETH"}
           </Button>
         </Stack>

@@ -16,9 +16,6 @@ import { LuExternalLink } from "react-icons/lu";
 import { getStarknetAddress, CONTRACT_OPTIONS } from "../utils/starknetUtils";
 import { toaster } from "../components/ui/toaster";
 import { useContract } from "../context/ContractContext";
-import { clearAppKitCache, forceDisconnectMetaMask } from "../utils/appkitProvider";
-import { useDisconnect } from "wagmi";
-import { useAppKit } from "@reown/appkit/react";
 
 export function Dashboard() {
   const [ethAddress, setEthAddress] = useState("");
@@ -26,8 +23,6 @@ export function Dashboard() {
   const [isLoading, setIsLoading] = useState(false);
   const { selectedContract, setSelectedContract } = useContract();
   const { resolvedTheme } = useTheme();
-  const { disconnect } = useDisconnect();
-  const { open, close } = useAppKit();
 
   const handleGetStarknetAddress = async () => {
     if (!ethAddress) {
@@ -65,81 +60,11 @@ export function Dashboard() {
     }
   };
 
-  const handleClearCache = () => {
-    const success = clearAppKitCache();
-    if (success) {
-      toaster.create({
-        title: "Success",
-        description: "Wallet connection cache cleared! You can now connect fresh.",
-        type: "success",
-        duration: 4000,
-      });
-    } else {
-      toaster.create({
-        title: "Error", 
-        description: "Failed to clear cache. Try manual browser cache clearing.",
-        type: "error",
-        duration: 4000,
-      });
-    }
-  };
-
-  const handleDisconnectWallet = async () => {
-    try {
-      // Disconnect from Wagmi
-      disconnect();
-      
-      // Close AppKit modal if open
-      close();
-      
-      // Force disconnect MetaMask and clear all cache
-      await forceDisconnectMetaMask();
-      
-      toaster.create({
-        title: "Success",
-        description: "Wallet forcefully disconnected! MetaMask connection cleared.",
-        type: "success",
-        duration: 4000,
-      });
-    } catch (error) {
-      console.error('Disconnect error:', error);
-      toaster.create({
-        title: "Error",
-        description: `Failed to disconnect wallet: ${error.message || 'Unknown error'}`,
-        type: "error",
-        duration: 4000,
-      });
-    }
-  };
-
-  const handleForceResetMetaMask = async () => {
-    try {
-      const success = await forceDisconnectMetaMask();
-      
-      if (success) {
-        toaster.create({
-          title: "MetaMask Reset",
-          description: "MetaMask connection forcefully reset! Try connecting again.",
-          type: "success",
-          duration: 5000,
-        });
-      } else {
-        toaster.create({
-          title: "Reset Failed",
-          description: "Could not reset MetaMask. Try manually disconnecting in MetaMask extension.",
-          type: "warning",
-          duration: 6000,
-        });
-      }
-    } catch (error) {
-      console.error('MetaMask reset error:', error);
-      toaster.create({
-        title: "Error",
-        description: "Failed to reset MetaMask connection.",
-        type: "error",
-        duration: 4000,
-      });
-    }
+  const ethRequestAccounts = async () => {
+    await window.ethereum.request({
+      method: "eth_requestAccounts",
+      params: [],
+    });
   };
 
   return (
@@ -149,32 +74,6 @@ export function Dashboard() {
           <Heading size="lg" textAlign={{ base: "center", md: "left" }}>
             RosettaNet BETA Testing Dashboard
           </Heading>
-          <HStack gap={2} flexWrap="wrap">
-            <Button
-              onClick={handleForceResetMetaMask}
-              size="sm"
-              variant="solid"
-              colorScheme="purple"
-            >
-              Force Reset MetaMask
-            </Button>
-            <Button
-              onClick={handleDisconnectWallet}
-              size="sm"
-              variant="outline"
-              colorScheme="orange"
-            >
-              Disconnect Wallet
-            </Button>
-            <Button
-              onClick={handleClearCache}
-              size="sm"
-              variant="outline"
-              colorScheme="red"
-            >
-              Clear Cache
-            </Button>
-          </HStack>
         </HStack>
 
         <Heading size="md" color="orange.500">

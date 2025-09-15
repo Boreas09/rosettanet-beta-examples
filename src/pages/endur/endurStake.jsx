@@ -7,6 +7,7 @@ import {
   Stack,
   Link,
   VStack,
+  Container,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAccount } from "wagmi";
@@ -111,69 +112,76 @@ export default function EndurLstStake() {
   };
 
   return (
-    <Box>
-      <Text fontSize={"lg"} fontWeight={"bold"}>
-        Endur LST Staking
-      </Text>
-      <Text as="cite" fontSize={"sm"}>
-        This part using Endur LST to stake STRK and get xSTRK. After transaction
-        successfully sent we can see our xSTRK amount in Rosettanet chain in
-        Wallet.
-      </Text>
-      <Text fontSize="sm" mt={2}>
-        Wallet needs to be connected to{" "}
-        <Text
-          as="span"
-          bg="orange.50"
-          px={2}
-          py={1}
-          borderRadius="md"
-          color="orange.600"
+    <VStack gap="6" align="stretch">
+      <Box>
+        <Text fontSize={"lg"} fontWeight={"bold"}>
+          Endur LST Staking
+        </Text>
+        <Text as="cite" fontSize={"sm"}>
+          This part using Endur LST to stake STRK and get xSTRK. After
+          transaction successfully sent we can see our xSTRK amount in
+          Rosettanet chain in Wallet.
+        </Text>
+        <Text fontSize="sm" mt={2}>
+          Wallet needs to be connected to{" "}
+          <Text
+            as="span"
+            bg="orange.50"
+            px={2}
+            py={1}
+            borderRadius="md"
+            color="orange.600"
+          >
+            RosettaNet
+          </Text>{" "}
+          Chain.
+        </Text>
+        <Stack
+          direction={{ base: "column", md: "row" }}
+          gap={4}
+          align="stretch"
+          my={5}
         >
-          RosettaNet
-        </Text>{" "}
-        Chain.
-      </Text>
-      <Input
-        placeholder="Enter STRK Amount"
-        mt={3}
-        mb={3}
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-      />
-      <Button mt={2} onClick={handleStake} loading={loading} disabled={loading}>
-        {loading ? "Staking STRK..." : "Stake STRK"}
-      </Button>
+          <Input
+            placeholder="Enter STRK Amount"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+          <Button onClick={handleStake} loading={loading} disabled={loading}>
+            {loading ? "Staking STRK..." : "Stake STRK"}
+          </Button>
+        </Stack>
 
-      <Text mt={2} fontSize={"lg"} fontWeight={"bold"}>
-        Transactions
-      </Text>
+        <Text mt={2} fontSize={"lg"} fontWeight={"bold"}>
+          Transactions
+        </Text>
 
-      <VStack gap={3} align="stretch" mt={4}>
-        {transactions.map((tx, index) => (
-          <Card.Root key={tx} size={"sm"} borderRadius={"lg"}>
-            <Card.Body>
-              <Stack gap={2}>
-                <Text fontSize={"sm"} fontWeight={"bold"}>
-                  Transaction {index + 1}
-                </Text>
-                <Text fontSize={"sm"} wordBreak="break-all">
-                  Transaction Hash: {tx}
-                </Text>
-                <Link
-                  fontSize={"sm"}
-                  href={`https://sepolia.voyager.online/tx/${tx}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  color="blue.500"
-                >
-                  View on Voyager
-                </Link>
-              </Stack>
-            </Card.Body>
-          </Card.Root>
-        ))}
-      </VStack>
-    </Box>
+        <VStack gap={3} align="stretch" mt={4}>
+          {transactions.map((tx, index) => (
+            <Card.Root key={tx} size={"sm"} borderRadius={"lg"}>
+              <Card.Body>
+                <Stack gap={2}>
+                  <Text fontSize={"sm"} fontWeight={"bold"}>
+                    Transaction {index + 1}
+                  </Text>
+                  <Text fontSize={"sm"} wordBreak="break-all">
+                    Transaction Hash: {tx}
+                  </Text>
+                  <Link
+                    fontSize={"sm"}
+                    href={`https://sepolia.voyager.online/tx/${tx}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    color="blue.500"
+                  >
+                    View on Voyager
+                  </Link>
+                </Stack>
+              </Card.Body>
+            </Card.Root>
+          ))}
+        </VStack>
+      </Box>
+    </VStack>
   );
 }

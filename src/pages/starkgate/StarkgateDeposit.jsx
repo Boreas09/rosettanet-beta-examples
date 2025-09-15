@@ -150,12 +150,7 @@ export default function StarkgateDeposit() {
           type="number"
           step="1"
         />
-        <Button
-          onClick={handleDeposit}
-          loading={loading}
-          colorScheme="blue"
-          size="lg"
-        >
+        <Button onClick={handleDeposit} loading={loading}>
           {loading ? "Processing Deposit..." : "Deposit ETH"}
         </Button>
       </Stack>

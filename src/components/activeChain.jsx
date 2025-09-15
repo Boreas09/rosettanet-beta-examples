@@ -35,6 +35,7 @@ export default function ActiveChain() {
           px={2}
           py={1}
           borderRadius={"0.25rem"}
+          fontSize={"sm"}
         >
           {chain}
         </Text>

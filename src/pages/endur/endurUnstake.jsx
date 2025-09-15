@@ -128,21 +128,22 @@ export default function EndurLstUnstake() {
         </Text>{" "}
         Chain.
       </Text>
-      <Input
-        placeholder="Enter xSTRK Amount"
-        mt={3}
-        mb={3}
-        value={amount}
-        onChange={(e) => setAmount(e.target.value)}
-      />
-      <Button
-        mt={2}
-        onClick={handleUnstake}
-        loading={loading}
-        disabled={loading}
+
+      <Stack
+        direction={{ base: "column", md: "row" }}
+        gap={4}
+        align="stretch"
+        my={5}
       >
-        {loading ? "Unstaking xSTRK..." : "Unstake xSTRK"}
-      </Button>
+        <Input
+          placeholder="Enter xSTRK Amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        />
+        <Button onClick={handleUnstake} loading={loading} disabled={loading}>
+          {loading ? "Unstaking xSTRK..." : "Unstake xSTRK"}
+        </Button>
+      </Stack>
 
       <Text mt={2} fontSize={"lg"} fontWeight={"bold"}>
         Transactions

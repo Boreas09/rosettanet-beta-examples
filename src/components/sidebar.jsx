@@ -12,13 +12,14 @@ import { Link, useLocation } from "react-router";
 import { useState } from "react";
 import {
   FiHome,
-  FiUser,
+  FiDollarSign,
   FiSettings,
   FiBarChart,
-  FiHelpCircle,
-  FiLogOut,
   FiMenu,
   FiX,
+  FiDivide,
+  FiLink,
+  FiLock,
 } from "react-icons/fi";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import ActiveChain from "./activeChain.jsx";
@@ -26,14 +27,18 @@ import AddRosettanetChain from "./addRosettanetChain.jsx";
 import AddRosettanetETH from "./addRosettanetEth.jsx";
 import ChainSwitcher from "./chainSwitcher.jsx";
 import AddRosettanetXSTRK from "./addRosettanetXSTRK.jsx";
+import {
+  safeRequestAccounts,
+  resetMetaMaskState,
+} from "../utils/safeMetaMask.js";
 
 const navigationItems = [
   { path: "/", label: "Home", icon: FiHome },
-  { path: "/starkgate", label: "Starkgate", icon: FiUser },
-  { path: "/avnu", label: "Avnu", icon: FiBarChart },
-  { path: "/unruggable", label: "Unruggable", icon: FiSettings },
-  { path: "/endur", label: "Endur LST xSTRK", icon: FiUser },
-  { path: "/starknetjs", label: "StarknetJS", icon: FiBarChart },
+  { path: "/starkgate", label: "Starkgate", icon: FiLink },
+  { path: "/avnu", label: "Avnu", icon: FiDivide },
+  { path: "/unruggable", label: "Unruggable", icon: FiLock },
+  { path: "/endur", label: "Endur LST xSTRK", icon: FiDollarSign },
+  { path: "/starknetjs", label: "StarknetJS", icon: FiSettings },
   { path: "/ethers", label: "Ethers", icon: FiSettings },
   { path: "/getstarknetv5", label: "Get Starknet V5", icon: FiSettings },
 ];
@@ -187,6 +192,13 @@ export function Sidebar() {
             <AddRosettanetXSTRK />
             <Separator />
             <ChainSwitcher />
+            <Separator />
+            <Button onClick={safeRequestAccounts} minW="100%" variant="ghost">
+              ethRequestAccounts
+            </Button>
+            <Button onClick={resetMetaMaskState} minW="100%" variant="ghost">
+              resetMetaMaskState
+            </Button>
           </VStack>
         </VStack>
       </Box>

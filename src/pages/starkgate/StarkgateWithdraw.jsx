@@ -147,12 +147,7 @@ export default function StarkgateWithdraw() {
           type="number"
           step="1"
         />
-        <Button
-          onClick={handleWithdraw}
-          loading={loading}
-          colorScheme="purple"
-          size="lg"
-        >
+        <Button onClick={handleWithdraw} loading={loading}>
           {loading ? "Processing Withdrawal..." : "Withdraw ETH"}
         </Button>
       </Stack>
