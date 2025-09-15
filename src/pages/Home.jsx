@@ -130,16 +130,10 @@ export function Home() {
             Working Wallets
           </Text>
           <List.Root mb={4} pl={4}>
-            <List.Item>
-              You can connect and interact protocols in Starknet with your
-              existing EVM wallet (Metamask, Rabby wallet, Coinbase Wallet,
-              Hardware wallets, etc.) Metamask
-            </List.Item>
+            <List.Item>Metamask</List.Item>
+            <List.Item>Trust Wallet</List.Item>
             <List.Item>Rabby wallet</List.Item>
-            <List.Item>
-              You can use L1 interactive protocols by just changing the network
-              on your wallet.
-            </List.Item>
+            <List.Item>Coinbase Wallet</List.Item>
           </List.Root>
 
           <Text fontWeight="bold" mb={2}>

@@ -9,19 +9,19 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { Link, useLocation } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FiHome,
   FiDollarSign,
   FiSettings,
-  FiBarChart,
   FiMenu,
   FiX,
   FiDivide,
   FiLink,
   FiLock,
 } from "react-icons/fi";
-import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
+import { useAppKitAccount } from "@reown/appkit/react";
+import { useAppKitModal } from "../hooks/useAppKitModal.js";
 import ActiveChain from "./activeChain.jsx";
 import AddRosettanetChain from "./addRosettanetChain.jsx";
 import AddRosettanetETH from "./addRosettanetEth.jsx";
@@ -31,6 +31,7 @@ import {
   safeRequestAccounts,
   resetMetaMaskState,
 } from "../utils/safeMetaMask.js";
+import { clearAppKitCache } from "../utils/cacheClear.js";
 
 const navigationItems = [
   { path: "/", label: "Home", icon: FiHome },
@@ -90,9 +91,13 @@ export function Sidebar() {
   const sidebarWidth = isCollapsed && !isMobile ? "80px" : "250px";
   const showSidebar = isMobile ? isOpen : true;
 
-  const { open } = useAppKit();
   const { address } = useAppKitAccount();
+  const { openAccount, openConnect, cleanup } = useAppKitModal();
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return cleanup;
+  }, [cleanup]);
   return (
     <>
       {/* Mobile Menu Button */}
@@ -176,11 +181,9 @@ export function Sidebar() {
             ))}
             <Separator />
             {address ? (
-              <Button onClick={() => open({ view: "Account" })}>
-                {address.slice(0, 9)}
-              </Button>
+              <Button onClick={openAccount}>{address.slice(0, 9)}</Button>
             ) : (
-              <Button onClick={open} variant="outline" bg="cyan.muted">
+              <Button onClick={openConnect} variant="outline" bg="cyan.muted">
                 Connect Wallet
               </Button>
             )}
@@ -198,6 +201,9 @@ export function Sidebar() {
             </Button>
             <Button onClick={resetMetaMaskState} minW="100%" variant="ghost">
               resetMetaMaskState
+            </Button>
+            <Button onClick={clearAppKitCache} minW="100%" variant="ghost">
+              clearAppKitCache
             </Button>
           </VStack>
         </VStack>
