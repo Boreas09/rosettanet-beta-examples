@@ -137,6 +137,12 @@ export function Home() {
               Coinbase Wallet - There is an issue with tx hash it returns wrong.
               It will be solved with Rosettanet Forwarder
             </List.Item>
+            <List.Item>
+              OKX Wallet - Right now we have a problem in OKX wallet.
+              l2_gas.max_fee_per_gas value is not Rosettanet's value. We are
+              investigating this problem but Rosettanet is working if we
+              increase Priority Fee 3.3 Gwei or more transaction succeds
+            </List.Item>
           </List.Root>
 
           <Text fontWeight="bold" mb={2}>
