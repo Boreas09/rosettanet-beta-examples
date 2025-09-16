@@ -133,7 +133,18 @@ export function Home() {
             <List.Item>Metamask</List.Item>
             <List.Item>Trust Wallet</List.Item>
             <List.Item>Rabby wallet</List.Item>
-            <List.Item>Coinbase Wallet</List.Item>
+            <List.Item>
+              Coinbase Wallet - There is an issue with tx hash it returns wrong.
+              It will be solved with Rosettanet Forwarder
+            </List.Item>
+          </List.Root>
+
+          <Text fontWeight="bold" mb={2}>
+            Not-Working Wallets
+          </Text>
+          <List.Root mb={4} pl={4}>
+            <List.Item>Phantom Wallet - Do not accept custom chains</List.Item>
+            <List.Item>Backpack Wallet - Do not accept custom chains</List.Item>
           </List.Root>
 
           <Text fontWeight="bold" mb={2}>
