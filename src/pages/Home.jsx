@@ -141,7 +141,7 @@ export function Home() {
               OKX Wallet - Right now we have a problem in OKX wallet.
               l2_gas.max_fee_per_gas value is not Rosettanet's value. We are
               investigating this problem but Rosettanet is working if we
-              increase Priority Fee 3.3 Gwei or more transaction succeds
+              increase Priority Fee 3.3 Gwei inside OKX wallet, transaction succeeds
             </List.Item>
           </List.Root>
 

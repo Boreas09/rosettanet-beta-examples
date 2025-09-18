@@ -196,7 +196,7 @@ export function Sidebar() {
             <Separator />
             <ChainSwitcher />
             <Separator />
-            <Button onClick={safeRequestAccounts} minW="100%" variant="ghost">
+            {/* <Button onClick={safeRequestAccounts} minW="100%" variant="ghost">
               ethRequestAccounts
             </Button>
             <Button onClick={resetMetaMaskState} minW="100%" variant="ghost">
@@ -204,7 +204,7 @@ export function Sidebar() {
             </Button>
             <Button onClick={clearAppKitCache} minW="100%" variant="ghost">
               clearAppKitCache
-            </Button>
+            </Button> */}
           </VStack>
         </VStack>
       </Box>
