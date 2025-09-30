@@ -32,6 +32,7 @@ import {
   resetMetaMaskState,
 } from "../utils/safeMetaMask.js";
 import { clearAppKitCache } from "../utils/cacheClear.js";
+import AddRosettanetChainEIP6963 from "./addRosettanetChainEIP6963.jsx";
 
 const navigationItems = [
   { path: "/", label: "Home", icon: FiHome },
@@ -191,6 +192,7 @@ export function Sidebar() {
             <ActiveChain />
             <Separator />
             <AddRosettanetChain />
+            <AddRosettanetChainEIP6963 />
             <AddRosettanetETH />
             <AddRosettanetXSTRK />
             <Separator />

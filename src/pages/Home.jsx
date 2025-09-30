@@ -16,6 +16,7 @@ import { LuExternalLink } from "react-icons/lu";
 import { getStarknetAddress, CONTRACT_OPTIONS } from "../utils/starknetUtils";
 import { toaster } from "../components/ui/toaster";
 import { useContract } from "../context/ContractContext";
+import { ClipboardRoot, ClipboardIconButton } from "../components/ui/clipboard";
 
 export function Home() {
   const [ethAddress, setEthAddress] = useState("");
@@ -244,15 +245,25 @@ export function Home() {
               </Box>
             </HStack>
             {starknetAddress && (
-              <Text
-                fontWeight="bold"
-                p={4}
-                bg="gray.emphasized"
-                borderRadius="md"
-                wordBreak="break-all"
-              >
-                Starknet Address: {starknetAddress}
-              </Text>
+              <ClipboardRoot value={starknetAddress}>
+                <HStack
+                  p={4}
+                  bg="gray.50"
+                  _dark={{ bg: "gray.800" }}
+                  borderRadius="md"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Text
+                    fontWeight="bold"
+                    wordBreak="break-all"
+                    flex={1}
+                  >
+                    Starknet Address: {starknetAddress}
+                  </Text>
+                  <ClipboardIconButton />
+                </HStack>
+              </ClipboardRoot>
             )}
             <HStack gap={4}>
               <Input

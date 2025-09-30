@@ -202,7 +202,7 @@ export default function GetStarknetV5() {
             Features:
           </Text>
           <VStack align="start" gap={1} pl={4} fontSize="sm">
-            <Text>• Avnu button swaps 1 STRK to 1 ETH via Avnu</Text>
+            <Text>• Avnu button swaps 1 STRK to ETH via Avnu</Text>
             <Text>
               • Endur LST button stakes 1 STRK and returns xSTRK via Endur
             </Text>

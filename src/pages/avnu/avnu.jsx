@@ -73,9 +73,33 @@ export default function Avnu() {
       const amountHex = "0x" + amount.toString(16);
 
       const getQuotes = await fetch(
-        `https://sepolia.api.avnu.fi/swap/v2/quotes?sellTokenAddress=0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d&buyTokenAddress=0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7&sellAmount=${amountHex}&onlyDirect=true&PULSAR_MONEY_FEE_RECIPIENT.value=0`
+        `https://sepolia.api.avnu.fi/swap/v2/quotes?sellTokenAddress=0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d&buyTokenAddress=0x49d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7&sellAmount=${amountHex}`
       );
+
+      if (!getQuotes.ok) {
+        toaster.create({
+          title: "Quote Error",
+          description: "Failed to fetch quotes from Avnu API.",
+          type: "error",
+          duration: 9000,
+        });
+        setLoading(false);
+        return;
+      }
+
       const getQuotesResponse = await getQuotes.json();
+
+      if (!getQuotesResponse || !Array.isArray(getQuotesResponse) || getQuotesResponse.length === 0) {
+        toaster.create({
+          title: "No Quotes Available",
+          description: "No exchange quotes available on Avnu.",
+          type: "error",
+          duration: 9000,
+        });
+        setLoading(false);
+        return;
+      }
+
       const quoteId = getQuotesResponse[0].quoteId;
 
       const postBody = {
