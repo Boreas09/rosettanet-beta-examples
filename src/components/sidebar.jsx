@@ -191,7 +191,7 @@ export function Sidebar() {
             <Separator />
             <ActiveChain />
             <Separator />
-            <AddRosettanetChain />
+            {/* <AddRosettanetChain /> */}
             <AddRosettanetChainEIP6963 />
             <AddRosettanetETH />
             <AddRosettanetXSTRK />

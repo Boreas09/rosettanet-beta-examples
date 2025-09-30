@@ -2,20 +2,22 @@ import { useState } from "react";
 import { Button } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 import { toaster } from "./ui/toaster";
+import { useWalletProvider } from "../utils/useWalletProvider";
 
 export default function AddRosettanetXSTRK() {
   const [loading, setLoading] = useState(false);
   const { address } = useAccount();
+  const walletProvider = useWalletProvider();
 
   const addToken = async () => {
-    if (window.ethereum && address) {
+    if (walletProvider && address) {
       setLoading(true);
       try {
         const tokenAddress = "0xb401bb848a7514a768e21c9f84cc6372c6629b59"; // Replace with your token's contract address
         const tokenSymbol = "xSTRK"; // Replace with your token's symbol
         const tokenDecimals = 18; // Replace with your token's decimals
 
-        const wasAdded = await window.ethereum.request({
+        const wasAdded = await walletProvider.request({
           method: "wallet_watchAsset",
           params: {
             type: "ERC20",

@@ -2,20 +2,22 @@ import { useState } from "react";
 import { Button } from "@chakra-ui/react";
 import { useAccount } from "wagmi";
 import { toaster } from "./ui/toaster";
+import { useWalletProvider } from "../utils/useWalletProvider";
 
 export default function AddRosettanetETH() {
   const [loading, setLoading] = useState(false);
   const { address } = useAccount();
+  const walletProvider = useWalletProvider();
 
   const addETH = async () => {
-    if (window.ethereum && address) {
+    if (walletProvider && address) {
       setLoading(true);
       try {
         const tokenAddress = "0xb5e1278663de249f8580ec51b6b61739bd906215"; // Replace with your token's contract address
         const tokenSymbol = "ETH"; // Replace with your token's symbol
         const tokenDecimals = 18; // Replace with your token's decimals
 
-        const wasAdded = await window.ethereum.request({
+        const wasAdded = await walletProvider.request({
           method: "wallet_watchAsset",
           params: {
             type: "ERC20",

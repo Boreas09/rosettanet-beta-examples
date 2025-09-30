@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@chakra-ui/react";
 import { useChainId, useAccount } from "wagmi";
 import { toaster } from "./ui/toaster";
+import { useWalletProvider } from "../utils/useWalletProvider";
 
 const rosettanetRender = "https://rosettanet.onrender.com/";
 const rosettanetLocal = "http://localhost:3000/";
@@ -11,37 +12,7 @@ export default function AddRosettanetChainEIP6963() {
   const chainId = useChainId();
   const [loading, setLoading] = useState(false);
   const { address } = useAccount();
-  const [walletProvider, setWalletProvider] = useState(null);
-
-  useEffect(() => {
-    // EIP-6963: Modern wallet detection standard
-    const providers = [];
-
-    const handleAnnouncement = (event) => {
-      providers.push(event.detail);
-      // Use the first available provider
-      if (!walletProvider && event.detail?.provider) {
-        setWalletProvider(event.detail.provider);
-      }
-    };
-
-    window.addEventListener("eip6963:announceProvider", handleAnnouncement);
-
-    // Request wallet providers to announce themselves
-    window.dispatchEvent(new Event("eip6963:requestProvider"));
-
-    // Fallback to window.ethereum after a short delay if no EIP-6963 providers found
-    const fallbackTimeout = setTimeout(() => {
-      if (providers.length === 0 && typeof window.ethereum !== "undefined") {
-        setWalletProvider(window.ethereum);
-      }
-    }, 100);
-
-    return () => {
-      window.removeEventListener("eip6963:announceProvider", handleAnnouncement);
-      clearTimeout(fallbackTimeout);
-    };
-  }, [walletProvider]);
+  const walletProvider = useWalletProvider();
 
   async function addRosettanet() {
     if (walletProvider && address) {
@@ -121,7 +92,7 @@ export default function AddRosettanetChainEIP6963() {
 
   return (
     <Button onClick={addRosettanet} minW="100%" variant="ghost">
-      Add RosettaNet Chain (EIP-6963)
+      Add RosettaNet Chain
     </Button>
   );
 }
